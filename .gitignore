@@ -11,7 +11,7 @@ dat/*
 
 # R project cache
 .Rproj.user/*
-*.Rproj
+# *.Rproj
 
 # misc R files
 *.Rhistory
