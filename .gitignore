@@ -1,0 +1,49 @@
+# OSX files
+.DS_Store
+Icon\r
+*\**\Icon\r
+
+# Windows files
+desktop.ini
+
+# data files
+dat/*
+
+# R project cache
+.Rproj.user/*
+*.Rproj
+
+# misc R files
+*.Rhistory
+*.RData
+
+# compiled files
+*.rds
+
+# figures
+#figures/*
+#*.pdf
+#*.png
+manuscript/Figs/*.pdf
+
+# notes
+*.doc
+*.docx
+
+# all manuscript files
+manuscript/**/*
+
+# misc fig folders
+papers/*
+
+# python
+# ignore notebooks
+*.ipynb
+.ipynb_checkpoints/**/*
+dart_id/models/*.pkl
+__pycache__/
+
+
+# no shiny
+ShinyRT/*
+.Rproj.user
