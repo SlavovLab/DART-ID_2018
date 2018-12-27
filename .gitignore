@@ -38,8 +38,8 @@ papers/*
 
 # python
 # ignore notebooks
-*.ipynb
-.ipynb_checkpoints/**/*
+#*.ipynb
+python_notebooks/.ipynb_checkpoints/**/*
 dart_id/models/*.pkl
 __pycache__/
 
