@@ -19,7 +19,7 @@ fp_dart <- vector(length=k)
 
 for(i in 1:length(peps)) {
   fp_mq[i] <- ceil(sum(ev.f$PEP[ev.f$PEP < peps[i]]))
-  fp_dart[i] <- ceil(sum(ev.f$PEP[ev.f$pep_updated < peps[i]]))
+  fp_dart[i] <- ceil(sum(ev.f$pep_updated[ev.f$pep_updated < peps[i]]))
 }
 
 # plot --------------------------------------------------------------------

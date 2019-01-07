@@ -252,13 +252,35 @@ dev.off()
 
 a_intens <- log10(ev_a$Intensity[!is.na(ev_a$Intensity)])
 b_intens <- log10(ev_b$Intensity[!is.na(ev_b$Intensity)])
-test_intens <- t.test(a_intens, b_intens, var.equal=T)
+# equal/unequal variance doesn't make a difference... but let's just do it right anyways
+var.test(a_intens, b_intens, alternative='two.sided')
+t.test(a_intens, b_intens, var.equal=F) # p < 2.2e-16. three stars.
 
+a_pif <- ev_a$PIF[!is.na(ev_a$PIF)]
+b_pif <- ev_b$PIF[!is.na(ev_b$PIF)]
+var.test(a_pif, b_pif, alternative='two.sided')
+t.test(a_pif, b_pif, var.equal=F) # p < 2.2e-16. three stars
+
+a_mc <- ev_a$`Missed cleavages`
+b_mc <- ev_b$`Missed cleavages`
+var.test(a_mc, b_mc, alternative='two.sided')
+t.test(a_mc, b_mc, var.equal=F) # p < 2.2e-16. three stars
+
+var.test(missing_a, missing_b)
+t.test(missing_a, missing_b, var.equal=F) # p < 2.2e-16, three stars
 
 # plot --------------------------------------------------------------------
 
+pdf(file='manuscript/Figs/poor_quant_v2.pdf', width=7, height=2)
+
+layout(rbind(c(1, 2, 3, 4)))
+
+par(cex.axis=1, 
+    mar=c(3.5,2,1,2.5),
+    oma=c(0,1,0,0))
+
 boxplot(list(a_intens, b_intens),
-        range=1.5, col=c(cb[1], cb[2]), ylim=c(4.75, 8.2),
+        range=1.5, col=c(cb[1], cb[2]), ylim=c(4.75, 8.4),
         outcex=0, outpch=4, outcol=rgb(0,0,0,0.1),
         xaxt='n', yaxt='n', xlab=NA, ylab=NA)
 
@@ -274,6 +296,66 @@ axis(1, at=c(1, 2), labels=NA, tck=-0.02, mgp=c(0, 0.2, 0))
 text(c(1, 2), rep(4.3, 2), c('Spectra', 'DART-ID'), xpd=T, srt=30, cex=1.15, adj=c(1, 0))
 axis(2, at=seq(4, 10), tck=-0.02, mgp=c(0, 0.5, 0), las=1)
 mtext(expression('log'[10]*' Precursor Ion Area'), side=2, line=1.25, cex=0.85)
+
+
+
+boxplot(list((ev_a$PIF), (ev_b$PIF)), 
+        range=1.5, col=c(cb[1], cb[2]), ylim=c(0.55, 1.11),
+        outcex=0, outpch=4, outcol=rgb(0,0,0,0.1),
+        xaxt='n', yaxt='n', xlab=NA, ylab=NA)
+
+# significance stars
+lines(c(1, 2), c(1.05, 1.05), col='black')
+# brackets
+lines(c(1, 1), c(1.035, 1.05), col='black')
+lines(c(2, 2), c(1.035, 1.05), col='black')
+text(1.5, 1.05, '***', adj=c(0.5, 0.2), cex=2)
+
+axis(1, at=c(1, 2), labels=NA, tck=-0.02, mgp=c(0, 0.2, 0))
+axis(2, at=seq(0.3, 1, by=0.1), label=seq(0.3, 1, by=0.1)*100, tck=-0.02, mgp=c(0, 0.5, 0), las=1)
+text(c(1, 2), rep(0.485, 2), c('Spectra', 'DART-ID'), xpd=T, srt=30, cex=1.15, adj=c(1, 0))
+mtext(expression('Precursor Ion, %'), side=2, line=2, cex=0.85)
+
+
+
+barplot(c(mean(ev_a$`Missed cleavages`), mean(ev_b$`Missed cleavages`)), width=1, space=0.5,
+        range=1.5, col=c(cb[1], cb[2]), xlim=c(0.25, 3.15), ylim=c(0, 0.24),
+        outcex=0, outpch=4, outcol=rgb(0,0,0,0.1),
+        xaxt='n', yaxt='n', xlab=NA, ylab=NA)
+
+# significance stars
+lines(c(1, 2.5), c(0.21, 0.21), col='black')
+# brackets
+lines(c(1, 1), c(0.203, 0.21), col='black')
+lines(c(2.5, 2.5), c(0.203, 0.21), col='black')
+text(1.75, 0.21, '***', adj=c(0.5, 0.2), cex=2)
+
+axis(1, at=c(-10, 1, 2.5, 10), labels=NA, tck=-0.02, mgp=c(0, 0.2, 0))
+axis(2, at=seq(0, 0.25, by=0.05), tck=-0.02, mgp=c(0, 0.5, 0), las=1)
+text(c(1, 2.5), rep(-0.02, 2), c('Spectra', 'DART-ID'), xpd=T, srt=30, cex=1.15, adj=c(1, 0))
+mtext(expression('Missed Cleavages, %'), side=2, line=2.25, cex=0.85)
+
+
+
+barplot(c(mean(missing_a) / 6, mean(missing_b) / 6), width=1, space=0.5,
+        range=1.5, col=c(cb[1], cb[2]), xlim=c(0.25, 3.15), ylim=c(0, 0.16),
+        outcex=0, outpch=4, outcol=rgb(0,0,0,0.1),
+        xaxt='n', yaxt='n', xlab=NA, ylab=NA)
+
+# significance stars
+lines(c(1, 2.5), c(0.14, 0.14), col='black')
+# brackets
+lines(c(1, 1), c(0.135, 0.14), col='black')
+lines(c(2.5, 2.5), c(0.135, 0.14), col='black')
+text(1.75, 0.14, '***', adj=c(0.5, 0.2), cex=2)
+
+axis(1, at=c(-10, 1, 2.5, 10), labels=NA, tck=-0.02, mgp=c(0, 0.2, 0))
+axis(2, at=seq(0, 1, by=0.05), labels=seq(0, 1, by=0.05)*100, 
+     tck=-0.02, mgp=c(0, 0.5, 0), las=1)
+text(c(1, 2.5), rep(-0.015, 2), c('Spectra', 'DART-ID'), xpd=T, srt=30, cex=1.15, adj=c(1, 0))
+mtext(expression('Missing Data, %'), side=2, line=2, cex=0.85)
+
+dev.off()
 
 
 # PCA plots ---------

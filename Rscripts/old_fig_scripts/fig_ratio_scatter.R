@@ -1,3 +1,5 @@
+# init, load data ---------------------------------------------------------
+
 library(tidyverse)
 library(MASS)
 library(pracma)
@@ -19,12 +21,11 @@ source('Rscripts/validation_cormats.R')
 # don't want different proteins, but want different PSMs.
 
 ev.f1 <- ev.f 
-#ev.f1 <- normalize_ri_data_table(ev.f1, grep('Reporter intensity corrected', colnames(ev.f1)))
 
-#ev_a <- ev.f %>% filter(qval < 0.001) %>%
-ev_a <- ev.f1 %>% filter(PEP < 0.01)
-#ev_b <- ev.f %>% filter(qval > 0.001 & qval_updated < 0.001) %>%
-ev_b <- ev.f1 %>% filter(PEP > 0.01 & pep_updated < 0.01) %>%
+ev_a <- ev.f %>% filter(qval < 0.001)
+#ev_a <- ev.f1 %>% filter(PEP < 0.01)
+ev_b <- ev.f %>% filter(qval > 0.001 & qval_updated < 0.001) %>%
+#ev_b <- ev.f1 %>% filter(PEP > 0.01 & pep_updated < 0.01) %>%
   # select peptides that aren't in ev_a
   filter(!`Modified sequence` %in% unique(ev_a$`Modified sequence`))
   
@@ -62,11 +63,11 @@ dmat_b <- ev_b %>%
   dplyr::select(colnames(ev_b)[dcols])
 
 # select only proteins that have high fold change in single cells
-j_channels=c(3, 5, 7)
-u_channels=c(4, 6, 8)
+j_channels=c(1, 3, 5)
+u_channels=c(2, 4, 6)
 
-dmat_c <- cbind(dmat_a[,j_channels], dmat_b[,j_channels], dmat_a[,u_channels], dmat_b[,u_channels])
-colnames(dmat_c) <- NA
+#dmat_c <- cbind(dmat_a[,j_channels], dmat_b[,j_channels], dmat_a[,u_channels], dmat_b[,u_channels])
+#colnames(dmat_c) <- NA
 
 # run t-test for each protein
 prot_sigs <- sapply(1:length(common_prots), function(i) {
@@ -242,3 +243,4 @@ a <- a %>% filter(confident == 1)
 
 plot(a$ratio_2_mean, b$ratio_2_mean)
 abline(a=0, b=1)
+
