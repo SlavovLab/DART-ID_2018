@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(pracma)
+library(RColorBrewer)
 source('Rscripts/lib.R')
 
 ## load MaxQuant output ---------------------------------------------------------------------------
@@ -198,12 +199,12 @@ pep_scatter_plot <- function(pep, new_pep, filename, name, hi.color='black', tit
   
   colfunc <- colorRampPalette(c('white', hi.color))
   
-  pdf(file=paste0('manuscript/Figs/',filename), width=2.3, height=2.3)
+  pdf(file=paste0('manuscript/Figs/',filename), width=3.5, height=2.75)
   
-  layout(t(c(1, 2)), widths=c(6, 1))
+  layout(t(c(1, 2)), widths=c(7, 1))
   
-  par(mar=c(1.5,2.5,1.25,0.75),
-      oma=c(0, 0.2, 0, 0.2),
+  par(mar=c(2.25,1.25,2,0.25),
+      oma=c(0.3, 0, 0.3, 0.5),
       pty='s', las=1,
       cex.axis=0.75, cex.lab=0.85, cex.main=1)
   
@@ -226,8 +227,8 @@ pep_scatter_plot <- function(pep, new_pep, filename, name, hi.color='black', tit
   rect(xleft=log10(conf_limit), xright=-2, ybottom=-2, ytop=0,
        border=NA, col=rgb(0,0,1,0.05))
   
-  text(-7.3, -1, 'Downgraded', cex=0.75, adj=c(0, 0.5))
-  text(-1.2, -3.75, 'Upgraded', cex=0.75, adj=c(0, 0), srt=270)
+  text(-7.5, -1, 'Downgraded', cex=1, adj=c(0, 0.5))
+  text(-1.2, -4.4, 'Upgraded', cex=1, adj=c(0, 0), srt=270)
   
   rng <- seq(-10, 0, 2)
   axis(1, tck=-0.02,  
@@ -238,13 +239,13 @@ pep_scatter_plot <- function(pep, new_pep, filename, name, hi.color='black', tit
        mgp=c(0, 0.3, 0), las=1)
   
   mtext('Spectra (MaxQuant)', 1, line=1.15, cex=0.85)
-  mtext(name, 2, line=1.5, cex=0.85, las=3)
+  mtext(name, 2, line=1.7, cex=0.85, las=3)
   mtext(paste0('Error Probability (PEP)\n', title), 3, line=0.1, cex=0.85, font=2)
   
-  par(mar=c(2.5, 0.2, 3, 1), pty='m')
+  par(mar=c(2.5, 0, 3, 1), pty='m')
   image(matrix(seq(-1, 1, length.out=nbins), ncol=nbins), col=colfunc(nbins),
         xlab=NA, ylab=NA, xaxt='n', yaxt='n')
-  mtext('Density', side=3, line=0.1, cex=0.75)
+  mtext('Density', side=3, line=0.25, cex=0.85)
   
   dev.off()
 }

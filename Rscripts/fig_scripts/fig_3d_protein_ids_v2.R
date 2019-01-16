@@ -26,7 +26,7 @@ boxs <- list(Spectra=apply(dmat, 2, sum),
 
 ## ---------
 
-load('dat/peptide_ids_20180816.rds')
+load('/gd/bayesian_RT/dat/peptide_ids_20180816.rds')
 
 # horizontal boxplot ------------------------------------------------------
 
@@ -108,5 +108,38 @@ text(c(1, 2.5, 4.5), par('usr')[3]-150, srt=45, adj=c(1, 0.5), xpd=T,
 #text(c())
 
 mtext('Peptides ID\'d per Experiment           ', 2, line=1, las=3, cex=0.7)
+
+dev.off()
+
+
+# scatter -----------------------------------------------------------------
+
+pdf(file='manuscript/Figs/peps_per_exp_scatter.pdf', width=5, height=5)
+
+par(mar=c(3, 4, 3, 1), cex.axis=1)
+
+dart_pars <- lm(boxs[['DART']] ~ boxs[['Spectra']])
+perc_pars <- lm(boxs[['Percolator']] ~ boxs[['Spectra']])
+
+plot(0, 0, type='n', xlim=c(0, 1700), ylim=c(0, 2500),
+     xaxt='n', yaxt='n', xlab=NA, ylab=NA, main=NA)
+points(boxs[['Spectra']], boxs[['DART']], pch=16, cex=1.25, col=cb[2])
+points(boxs[['Spectra']], boxs[['Percolator']], pch=16, cex=1.25, col=cb[3])
+
+abline(a=0, b=1, col=cb[1], lwd=2) # Spectra
+#abline(a=dart_pars$coefficients[1], b=dart_pars$coefficients[2], col=cb[2], lwd=2)
+#abline(a=perc_pars$coefficients[1], b=perc_pars$coefficients[2], col=cb[3], lwd=2)
+
+axis(1, at=seq(0, 2000, by=500), tck=-0.02, mgp=c(0, 0.3, 0))
+axis(2, at=seq(0, 2500, by=500), tck=-0.02, mgp=c(0, 0.5, 0), las=1)
+
+mtext('# PSMs from Spectra', side=1, line=1.5, cex=1)
+mtext('# Updated PSMs', side=2, line=2.75, cex=1)
+mtext('Peptides Quantified Per SCoPE-MS set at 1% FDR', side=3, line=0.5, cex=1, font=2)
+
+legend('bottomright', c('Spectra', 'DART-ID', 'Percolator'), 
+       pch=c(NA, 16, 16), lty=c(1, NA, NA), lwd=c(3, NA, NA), seg.len=1, pt.cex=2,
+       col=c(cb[1], cb[2], cb[3]), bty='n', inset=c(0.01, 0.01), cex=1,
+       x.intersp=1, y.intersp=1.2)
 
 dev.off()

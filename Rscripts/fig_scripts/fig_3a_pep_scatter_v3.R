@@ -14,7 +14,7 @@ ev <- read_tsv('/gd/bayesian_RT/Alignments/SQC_20180815_2/ev_updated.txt')
 conf_limit <- 1e-8
 
 ev.f <- ev %>%
-  select(c('Sequence', 'PEP', 'pep_new')) %>%
+  select(c('Sequence', 'PEP', 'pep_new', 'Raw file')) %>%
   filter(!is.na(pep_new)) %>%
   filter(PEP > 0 & pep_new > 0 & PEP > conf_limit & pep_new > conf_limit) %>%
   mutate_at(c('PEP', 'pep_new'), funs(ifelse(. > 1, 1, .))) %>%

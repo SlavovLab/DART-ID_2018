@@ -29,10 +29,10 @@ ev.f <- ev %>%
   # only select SQC master sets
   filter(grepl('SQC', `Raw file`)) %>%
   # filter out non J/U sets (QC40E,F, QC42A)
-  filter(!grepl('SQC9', `Raw file`)) # %>%
+  filter(!grepl('SQC9', `Raw file`))  %>%
   # select 1% protein fdr
-  # filter(!is.na(prot_fdr)) %>%
-  # filter(prot_fdr < 0.01)
+  filter(!is.na(prot_fdr)) %>%
+  filter(prot_fdr < 0.01)
   #dplyr::select(c('Sequence', 'Modified sequence', 'Protein', 'Raw file', 'Retention time', 
   #                'Intensity', 'PIF',
   #         'PEP', 'pep_new', 'pep_updated', 'qval', 'qval_updated', dcols))
