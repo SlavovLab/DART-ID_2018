@@ -47,3 +47,6 @@ __pycache__/
 # no shiny
 ShinyRT/*
 .Rproj.user
+
+# excel temp files
+~*.xlsx

@@ -32,6 +32,10 @@ All data used for these diagrams are simulated. Values such as null distribution
 * iRT search and converted data: dat/irt.txt, dat/irt.xls (ftp://massive.ucsd.edu/MSV000083149/other/Rdata/)
 * R objects: error_df.RData (ftp://massive.ucsd.edu/MSV000083149/other/Rdata/)
 
+Experiments used:
+
+180320S_QC_SQC67A1, 180324S_QC_SQC67C10, 180324S_QC_SQC68A1, 180324S_QC_SQC68B1, 180324S_QC_SQC69A, 180324S_QC_SQC69B, 180324S_QC_SQC70A, 180324S_QC_SQC70B, 180324S_QC_SQC71A, 180324S_QC_SQC71B, 180402S_QC_SQC72A1, 180402S_QC_SQC72B1, 180402S_QC_SQC73A1, 180402S_QC_SQC73A2, 180406S_QC_SQC74A, 180406S_QC_SQC74B, 180408S_QC_SQC75A, 180408S_QC_SQC75B, 180409S_QC_SQC76A, 180409S_QC_SQC76B, 180411S_QC_SQC77A, 180411S_QC_SQC77B, 180413S_X_FP18I, 180413S_X_FP18J, 180413S_X_FP18K, 180416S_QC_SQC78A1, 180420S_QC_SQC79A, 180420S_QC_SQC79B, 180420S_QC_SQC80A, 180420S_QC_SQC80B, 180424S_QC_SQC81A, 180424S_QC_SQC81B, 180424S_X_IFN6H, 180424S_X_IFN6I, 180424S_X_IFN6J, 180424S_X_IFN6K, 180502S_QC_SQC82A, 180502S_QC_SQC82B, 180503S_QC_SQC83A, 180503S_QC_SQC83B, 180503S_QC_SQC84A, 180503S_QC_SQC84B, 180503S_QC_SQC85A1, 180503S_QC_SQC85B1, 180503S_QC_SQC86A, 180503S_QC_SQC86B
+
 ### Scripts: (GitHub/Rscripts)
 
 * alignment_comparisons.R -- load and process alignment comparison data
@@ -43,6 +47,8 @@ All data used for these diagrams are simulated. Values such as null distribution
 ## Figure 3:
 
 ### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
 
 Figure 3B. Contains only the first 50 experiments (sorted chronologically, from run date) of the entire dataset, for visual clarity and space constraints. Figures 3A, C, D, and E use data from the entire set.
 
@@ -77,6 +83,10 @@ The proportions and magnitudes of numbers from Figure 3B. do shift when includin
 
 ## Figure 5:
 
+### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
+
 ### Scripts: (GitHub/Rscripts)
 
 * add_percolator.R -- add results from percolator output
@@ -88,6 +98,8 @@ The proportions and magnitudes of numbers from Figure 3B. do shift when includin
 ## Figure 6:
 
 ### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
 
 Manually removed experiments that were missing a significant amount of TMT quantitation, in order to lessen the amount of missing data in the final expression matrix.
 
@@ -121,7 +133,7 @@ All data was simulated
 
 ### Scripts: (GitHub/Rscripts)
 
-* fig_scripts/sfig_1_mixture_model_v2.R
+* fig_scripts/sfig_mixture_model.R
 
 
 
@@ -130,39 +142,121 @@ All data was simulated
 
 ### Data:
 
-All data was simulated
+* One-piece fit: ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_varied_linear_20180711_2
+* Two-piece fit: ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_varied_20180711_4
 
 ### Scripts: (GitHub/Rscripts)
 
-* fig_scripts/sfig_2_bootstrap.R
+* fig_scripts/sfig_compare_linear.R
 
 
 
 
 ## Supporting Figure 3:
 
-* fig_scripts/sfig_3_compare_linear.R
+### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_exp_rt_variance.R
+
 
 
 
 
 ## Supporting Figure 4:
 
-* fig_scripts/sfig_4_exp_rt_variance.R
+### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_distribution_choice.R
 
 
 
 
 ## Supporting Figure 5:
 
-* fig_scripts/sfig_5_distribution_choice.R
+### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_varied_20180711_4/
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_othermethods.R
+
 
 
 
 
 ## Supporting Figure 6:
 
-* fig_scripts/fig_ratio_scatter.R
+### Data:
 
+* ftp://massive.ucsd.edu/MSV000083149/updates/2019-01-21_blahoink_9a4c796d/other/dat_SQC_FDR_1/evidence.txt
+* ftp://massive.ucsd.edu/MSV000083149/updates/2019-01-21_blahoink_9a4c796d/other/SQC_include_decoy_20190109/ev_updated.txt
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_error_rates.R
+
+
+
+
+
+## Supporting Figure 7:
+
+### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_rel_ratios.R
+
+
+
+
+## Supporting Figure 8:
+
+### Data:
+
+* ftp://massive.ucsd.edu/MSV000083149/updates/2019-01-21_blahoink_9a4c796d/other/iPRG2015_20181228/
+* ftp://massive.ucsd.edu/MSV000083149/updates/2019-01-21_blahoink_9a4c796d/other/PXD011654_20190120/
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_bulksets.R
+
+
+
+
+## Supporting Figure 9:
+
+### Data:
+
+All data was simulated
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_bootstrap.R
+
+
+
+
+
+## Supporting Figure 10:
+
+### Data:
+
+ftp://massive.ucsd.edu/MSV000083149/other/Alignments/SQC_20180815_2/ev_updated.txt
+
+### Scripts: (GitHub/Rscripts)
+
+* fig_scripts/sfig_peptides_per_prot.R
 
 
