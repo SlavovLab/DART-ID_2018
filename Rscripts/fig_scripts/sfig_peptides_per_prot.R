@@ -33,65 +33,95 @@ ev.f <- ev %>%
 
 ev_a <- ev.f %>% filter(qval < 0.01)
 ev_b <- ev.f %>% filter(qval > 0.01 & qval_updated < 0.01)
+ev_c <- ev.f %>% filter(qval_updated < 0.01)
 
-# proteins with only 1 peptide? -------------------------------------------
 
-peps_per_prot <- ev.f %>%
-  # Spectra PSMs = 1
-  # DART-ID PSMs = 2
-  # all other are 0
-  mutate(group=as.numeric(qval < 0.01)) %>%
-  mutate(group=group + as.numeric((qval > 0.01 & qval_updated < 0.01) * 2)) %>%
-  # remove group 0
-  filter(group > 0) %>%
-  mutate(group=factor(group, labels=c('Spectra', 'DART-ID'))) %>%
-  group_by(Protein, group) %>%
-  summarise(n=length(unique(`Modified sequence`)),
-            m=n()) %>%
-  # cap n at 10
-  mutate_at('n', funs(ifelse(. > 10, 10, .))) %>%
-  # log2 transform count
-  mutate(m=log2(m)) %>%
-  arrange(desc(n))
+# peptides/PSMs per protein -----------------------------------------------
 
-# remove proteins from DART-ID that are present already in Spectra
-orig_prots <- peps_per_prot %>% filter(group == 'Spectra') %>% pull(Protein)
-peps_per_prot <- peps_per_prot %>%
-  filter(!(group == 'DART-ID' & Protein %in% orig_prots))
+peps_per_prot <- function(e) {
+  e %>%
+    group_by(Protein) %>%
+    summarise(peptides=length(unique(`Sequence`)),
+              psms=log2(n()))
+}
 
+p_a <- peps_per_prot(ev_a) %>% mutate(group=1)
+p_b <- peps_per_prot(ev_b) %>% mutate(group=2)
+p_c <- peps_per_prot(ev_c) %>% mutate(group=3)
+
+# for DART-ID new proteins (p_b), remove proteins from Spectra (p_a)
+p_b <- p_b %>% filter(!Protein %in% p_a$Protein)
+
+# combine data
+p_all <- rbind(p_a, p_b, p_c)
+# ceiling peptides/protein to 10
+p_all <- p_all %>% mutate_at('peptides', funs(ifelse(. > 10, 10, .)))
+# factorize group
+p_all$group <- factor(p_all$group, labels=c('Spectra', 'DART-ID new proteins', 'DART-ID all proteins'))
 
 # Plotting ----------------------------------------------------------------
 
+# function to increase vertical spacing between legend keys
+# @clauswilke
+# trick from https://stackoverflow.com/questions/11366964/is-there-a-way-to-change-the-spacing-between-legend-items-in-ggplot2/26971729
+draw_key_polygon3 <- function(data, params, size) {
+  lwd <- min(data$size, min(size) / 4)
+  
+  grid::rectGrob(
+    width = grid::unit(0.75, "npc"),
+    height = grid::unit(0.75, "npc"),
+    gp = grid::gpar(
+      col = data$colour,
+      fill = alpha(data$fill, data$alpha),
+      lty = data$linetype,
+      lwd = lwd * .pt,
+      linejoin = "mitre"
+    ))
+}
+
+# register new key drawing function, 
+# the effect is global & persistent throughout the R session
+GeomBar$draw_key = draw_key_polygon3
+
 p <- 
-ggplot(peps_per_prot) +
-  geom_histogram(aes(n, fill=group), position='dodge', binwidth=1, 
+ggplot(p_all) +
+  geom_histogram(aes(peptides, fill=group), position='dodge', binwidth=1, 
                  color='black', size=0.25) +
-  facet_wrap(group~., nrow=2, ncol=1) +
   scale_x_continuous(breaks=seq(1, 10), labels=c(seq(1,9), '10+')) +
-  scale_y_continuous(limits=c(0, 700), expand=c(0,0)) + 
-  scale_fill_manual(values=paste0(c(cb[1], cb[2]), 'FF'), guide=F) +
+  scale_y_continuous(limits=c(0, 700), breaks=seq(0, 700, by=100), expand=c(0,0)) + 
+  scale_fill_manual(values=c(cb[1], paste0(cb[2], '88'), cb[2])) +
+  #guides(fill=guide_legend(keywidth=0.5, keyheight=0.5, default.unit='cm')) +
   labs(x='Peptide Sequences per Protein', y='Count', fill=NULL) +
   theme_bert() + 
   theme(
-    strip.text = element_text(size=12)
+    plot.margin=unit(c(0.25,0.25,0.25,0.25), 'cm'),
+    legend.position=c(0.65, 0.8),
+    legend.key.size = unit(0.75,'cm'),
+    legend.text=element_text(size=10),
+    strip.text = element_text(size=12),
+    axis.text=element_text(size=12)
   )
 
 ggsave('manuscript/Figs/peptides_per_prot.pdf', plot=p, device='pdf',
-       width=3.5, height=4, units='in')
+       width=3.5, height=3, units='in')
 
 p <- 
-ggplot(peps_per_prot) +
-  geom_histogram(aes(m, fill=group), position='dodge', binwidth=1, 
+ggplot(p_all) +
+  geom_histogram(aes(psms, fill=group), position='dodge', binwidth=1, 
                  color='black', size=0.25) +
-  facet_wrap(group~., nrow=2, ncol=1) +
   scale_x_continuous(breaks=seq(0, 12)) +
   scale_y_continuous(limits=c(0, 500), expand=c(0,0)) + 
-  scale_fill_manual(values=paste0(c(cb[1], cb[2]), 'FF'), guide=F) +
+  scale_fill_manual(values=c(cb[1], paste0(cb[2], '88'), cb[2])) +
   labs(x='Log2 PSMs per Protein', y='Count', fill=NULL) +
   theme_bert() + 
   theme(
-    strip.text = element_text(size=12)
+    plot.margin=unit(c(0.25,0.25,0.25,0.25), 'cm'),
+    legend.position=c(0.65, 0.8),
+    legend.key.size = unit(0.75,'cm'),
+    legend.text=element_text(size=10),
+    strip.text = element_text(size=12),
+    axis.text=element_text(size=12)
   )
 
 ggsave('manuscript/Figs/psms_per_prot.pdf', plot=p, device='pdf',
-       width=3.5, height=4, units='in')
+       width=3.5, height=3, units='in')
