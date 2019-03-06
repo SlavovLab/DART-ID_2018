@@ -1,4 +1,5 @@
 # DART-ID
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/SlavovLab/DART-ID_2018/master)
 
 Code for figures/data analysis of the DART-ID publication:
 
