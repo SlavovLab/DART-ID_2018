@@ -1,10 +1,12 @@
+# Init --------------------------------------------------------------------
+
 library(tidyverse)
 library(RColorBrewer)
 source('Rscripts/lib.R')
 
 # ----------------------------------------------------------------
 
-pdf(file='manuscript/Figs/canonical_demo_v4.pdf', width=3.5, height=2.5)
+pdf(file='manuscript/Figs/canonical_demo_v5.pdf', width=3.5, height=2.5)
 
 par(oma=c(0,0,0.25,0),
     mar=c(2,3,0.25,6), cex.axis=0.85)
@@ -69,16 +71,16 @@ par(lheight=1)
 
 axis(2, at=seq(19, 23, by=0.5), tck=-0.02, mgp=c(0, 0.4, 0), las=1)
 axis(1, at=1:num_exps, tck=-0.02, mgp=c(0, 0.1, 0),
-     labels=LETTERS[1:num_exps])
+     labels=parse(text=paste0('k[', 1:num_exps, ']')))
 
 mtext('Reference RT', side=4, at=mus[1]+0.08, 
       line=0.3, las=1, col=cols[2])
-mtext(bquote(.('Peptide ')*beta), side=4, at=mus[1]-0.08, 
+mtext(expression('Peptide i'[1]), side=4, at=mus[1]-0.08, 
       line=0.3, las=1, col=cols[2])
 
 mtext('Reference RT', side=4, at=mus[2]+0.08, 
       line=0.3, las=1, col=cols[1])
-mtext(bquote(.('Peptide ')*alpha), side=4, at=mus[2]-0.08, 
+mtext(expression('Peptide i'[2]), side=4, at=mus[2]-0.08, 
       line=0.3, las=1, col=cols[1])
 
 mtext('Experiment', side=1, line=1, cex=1)

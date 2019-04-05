@@ -30,10 +30,10 @@ load('/gd/bayesian_RT/dat/peptide_ids_20180816.rds')
 
 # horizontal boxplot ------------------------------------------------------
 
-pdf(file='manuscript/Figs/peps_per_exp_v8_harrison.pdf', width=1.75, height=1.75)
+pdf(file='manuscript/Figs/peps_per_exp_v9.pdf', width=1.75, height=1.5)
 
 par(mar=c(1,3,0,0.25),
-    oma=c(0,0,1.4,0),
+    oma=c(0,0,1,0),
     pty='m', las=1, cex.axis=0.6)
 
 boxplot(rev(boxs), horizontal=T,
@@ -49,7 +49,7 @@ axis(1, at=seq(0, 2500, by=500), labels=c(0, NA, 1000, NA, 2000, NA), tck=-0.02,
 #     tck=-0.02, mgp=c(0, 0.3, 0), las=1)
 text(x=rep(-150, 4), y=seq(0.85,4,by=1),
      labels=c(expression('DART-ID'[1]), expression('DART-ID'[1+2]),'Percolator','Spectra'),
-     xpd=T, srt=-30, cex=0.65, adj=c(1, 0.5))
+     xpd=T, srt=-30, cex=0.65, adj=c(0.95, 0.7))
 
 mtext('        Peptides/Experiment', side=3, line=0.25, las=1, font=2, cex=0.85, outer=T)
 

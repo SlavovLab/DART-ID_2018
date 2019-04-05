@@ -1,3 +1,5 @@
+# Init --------------------------------------------------------------------
+
 library(tidyverse)
 library(ggridges)
 source('Rscripts/lib.R')
@@ -15,21 +17,29 @@ df <- data.frame(pep=c(ev$PEP, ev$pep_updated),
 
 df <- df[df$pep > 1e-15,]
 
+save(df, file='/gd/bayesian_RT/dat/pep_dists_20190405.rds')
+
+## ---------
+
+load('/gd/bayesian_RT/dat/pep_dists_20190405.rds')
+
 
 # plot --------------------------------------------------------------------
+
+rng <- seq(-10, 0, by=2)
 
 p <- ggplot(df) +
   geom_density_ridges(aes(x=log10(pep), y=method, group=method, fill=method), 
                       rel_min_height=0.01, scale=2) +
-  scale_x_continuous(limits=c(-8, 0.3), breaks=seq(-10, 0, by=2)) +
+  scale_x_continuous(limits=c(-8, 0.3), breaks=rng, labels=fancy_scientific(10**rng)) +
   scale_y_discrete(expand=c(0.01, 0.01)) +
   scale_fill_manual(values=c(cb[2], cb[1]), guide=F) +
-  labs(x='log10 PEP', y=NULL) +
+  labs(x='Posterior Error Probability (PEP)', y=NULL) +
   theme_ridges() + theme(
-    plot.margin = margin(t=0.1, r=0.1, b=0, l=0.1, unit='cm'),
-    axis.text.y = element_text(size=9, angle=-30),
-    axis.text.x = element_text(size=9),
-    axis.title.x = element_text(size=9, hjust=0.5, vjust=0.5)
+    #plot.margin = margin(t=0.1, r=0.1, b=0, l=0.1, unit='cm'),
+    axis.text.y = element_text(size=18),
+    axis.text.x = element_text(size=16),
+    axis.title.x = element_text(size=18, hjust=0.5, vjust=0.5)
   )
 
-ggsave(filename='manuscript/Figs/pep_dists.pdf', plot=p, device='pdf', width=1.75, height=1.25)
+ggsave(filename='manuscript/Figs/pep_dists_v2.pdf', plot=p, device='pdf', width=5, height=5)

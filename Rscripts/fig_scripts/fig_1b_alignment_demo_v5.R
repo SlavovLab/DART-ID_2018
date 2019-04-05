@@ -1,3 +1,5 @@
+# Init --------------------------------------------------------------------
+
 library(tidyverse)
 library(RColorBrewer)
 source('Rscripts/lib.R')
@@ -18,7 +20,7 @@ unsaturate <- function(color, factor=1.4) {
 
 ## ----------
 
-pdf(file='manuscript/Figs/alignment_demo_v8.pdf', width=3.5, height=2.5)
+pdf(file='manuscript/Figs/alignment_demo_v9.pdf', width=3.5, height=2.5)
 par(oma=c(0,0,0,0),
     mar=c(2,2.5,1.25,5.5),
     cex.lab=0.85, cex.axis=0.85, cex.main=1,
@@ -113,11 +115,11 @@ axis(side=2, at=seq(0, 30, by=1),
 mtext('Reference RT (min)', side=1, line=1)
 mtext('Observed RT (min)', side=2, line=1.4, las=3)
 
-mtext('Experiment A', side=4, at=25.30, las=1, line=0.25, col=cols[1])
-mtext('Experiment B', side=4, at=23.60, las=1, line=0.25, col=cols[2])
-mtext('Experiment C', side=4, at=22.00, las=1, line=0.25, col=cols[3])
+mtext(expression('Experiment k'[1]), side=4, at=25.30, las=1, line=0.25, col=cols[1])
+mtext(expression('Experiment k'[2]), side=4, at=23.60, las=1, line=0.25, col=cols[2])
+mtext(expression('Experiment k'[3]), side=4, at=22.00, las=1, line=0.25, col=cols[3])
 
-text(mus, par('usr')[4]+0.4, labels=parse(text=c('beta', 'alpha', 'gamma', 'theta')),
+text(mus, par('usr')[4]+0.4, labels=parse(text=c('i[1]', 'i[2]', 'i[3]', 'i[4]')),
      col=pep_cols[1:4], xpd=T, cex=1.25, font=2)
 text(20.2, par('usr')[4]+0.4, 'Peptide:', adj=c(1, 0.5), xpd=T, cex=1)
 
