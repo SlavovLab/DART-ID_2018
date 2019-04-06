@@ -20,7 +20,7 @@ ev_dart.f <- ev_dart %>%
 
 fdr_levels <- c(0.001, 0.003, 0.01, 0.03, 0.1)
 
-y_dart <- vector(length=length(fdr_levels))
+y_dart <- vector(length=length(fdr_levels))~A
 
 for(i in 1:length(fdr_levels)) {
   thresh <- fdr_levels[i]
@@ -51,8 +51,8 @@ abline(a=0, b=1, col='red')
 
 y_mq <- vector(length=length(fdr_levels))
 fdr_levels <- c(0.001, 0.003, 0.01, 0.03, 0.1)
-ev_fdr_files <- c('/gd/bayesian_RT/dat_SQC_FDR_1/evidence.txt',
-                  '/gd/bayesian_RT/dat_SQC_FDR_1/evidence.txt',
+ev_fdr_files <- c('/gd/bayesian_RT/dat_SQC_FDR_0p1/evidence.txt',
+                  '/gd/bayesian_RT/dat_SQC_FDR_0p3/evidence.txt',
                   '/gd/bayesian_RT/dat_SQC_FDR_1/evidence.txt',
                   '/gd/bayesian_RT/dat_SQC_FDR_3/evidence.txt',
                   '/gd/bayesian_RT/dat_SQC_FDR_10/evidence.txt')
