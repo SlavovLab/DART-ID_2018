@@ -1,3 +1,5 @@
+# init --------------------------------------------------------------------
+
 library(tidyverse)
 source('Rscripts/lib.R')
 
@@ -15,6 +17,14 @@ source('Rscripts/add_percolator.R')
 ## run protein quant -------
 
 source('Rscripts/protein_quant.R')
+
+# save data ---------------------------------------------------------------
+
+save(dmat_c, file='/gd/bayesian_RT/dat/protein_map_20190515.rds')
+
+# load data ---------------------------------------------------------------
+
+load('/gd/bayesian_RT/dat/protein_map_20190515.rds')
 
 # reorder and raster ------------------------------------------------------
 
@@ -41,7 +51,7 @@ dmat_cc <- as.raster(dmat_cc)
 ## ---------
 
 #pdf(file='manuscript/Figs/protein_map_v4.pdf', width=3.5, height=6)
-png(file='manuscript/Figs/protein_map_v9.png', width=3.5, height=6, units='in', res=250)
+png(file='manuscript/Figs/protein_map_v9.png', width=3.5, height=6, units='in', res=500)
 
 par(mar=c(4.5, 2, 1.25, 2.5),
     cex.axis=0.75, cex.lab=0.75,
@@ -110,7 +120,7 @@ dev.off()
 ry0 <- sum(apply(dmat_c[,1:50], 1, function(x) { any(x == 1)}))
 ry1 <- nrow(dmat_cc)
 
-png(file='manuscript/Figs/protein_map_v10.png', width=3.5, height=6, units='in', res=250)
+png(file='manuscript/Figs/protein_map_v11.png', width=3.5, height=6, units='in', res=500)
 
 layout(c(1, 2), heights=c((ry1-ry0)/ry0), 1)
 

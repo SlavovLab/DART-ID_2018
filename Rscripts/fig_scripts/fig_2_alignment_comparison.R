@@ -1,3 +1,5 @@
+# init --------------------------------------------------------------------
+
 library(tidyverse)
 library(ggridges)
 library(RColorBrewer)
@@ -5,12 +7,12 @@ source('Rscripts/lib.R')
 
 ## load data --------
 
-source('Rscripts/alignment_comparison.R')
+source('Rscripts/alignment_comparisons.R')
 
 # or load data from file --------------------------------------------------
 # generated 20180712
-load('dat/error_df.RData')
-load('dat/error_df_20180716.RData')
+load('/gd/bayesian_RT/dat/error_df.RData')
+load('/gd/bayesian_RT/dat/error_df_20180716.RData')
 
 ## or fake some data ------
 
@@ -45,7 +47,7 @@ cols <- c(brewer.pal(9, 'Blues')[5], brewer.pal(9, 'BuGn')[5], brewer.pal(9, 'Bl
           brewer.pal(9, 'Reds')[4], brewer.pal(9, 'PuRd')[5], brewer.pal(9, 'Reds')[7])
 
 #pdf(file='manuscript/Figs/alignment_residual_scatter.pdf', width=4, height=6)
-png(file='manuscript/Figs/alignment_residual_scatter_v5.png', width=3.5, height=5.25, units='in', res=250)
+png(file='manuscript/Figs/alignment_residual_scatter_v6.png', width=3.5, height=5.25, units='in', res=500)
 
 layout(rbind(c(1,4),c(3,5),c(2,6)))
 
