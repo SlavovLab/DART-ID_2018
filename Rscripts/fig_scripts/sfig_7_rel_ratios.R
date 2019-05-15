@@ -41,8 +41,7 @@ ev.f <- ev %>%
   # ceil PEPs to 1
   mutate_at(c('PEP', 'pep_updated'), funs(ifelse(. > 1, 1, .))) %>%
   # calculate q-values
-  mutate(qval=(cumsum(PEP[order(PEP)]) / 
-                 seq(1, nrow(ev)))[order(order(PEP))],
+  mutate(qval=(cumsum(PEP[order(PEP)]) / seq(1, nrow(ev)))[order(order(PEP))],
          qval_updated=(cumsum(pep_updated[order(pep_updated)]) / 
                          seq(1, nrow(ev)))[order(order(pep_updated))]) %>%
   # exclude CON, REV proteins

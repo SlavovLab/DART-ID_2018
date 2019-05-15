@@ -97,9 +97,7 @@ ev.f$MBR_RT_corrected <- ev.mq$RT_calibrated
 
 # iRT
 
-if(is.null(df_irt)) {
-  df_irt <- read_tsv('/gd/bayesian_RT/dat/irt.txt')
-}
+df_irt <- read_tsv('/gd/bayesian_RT/dat/irt.txt')
 
 df_irt_f <- df_irt %>% 
   # remove IDs without predicted RTs
@@ -181,6 +179,11 @@ ev.f$irt_pep <- irt_pep
 
 MBR_pep = (rt_minus * pep) / ((rt_minus * pep) + (rt_plus_MBR * (1 - pep)))
 ev.f$MBR_pep <- MBR_pep
+
+
+# save to file ------------------------------------------------------------
+
+save(ev.f, file='/gd/bayesian_RT/dat/othermethods_20190422.rds')
 
 ## Define 2D PEP Scatter function, similar to Fig3A -----------------------------------------------
 
