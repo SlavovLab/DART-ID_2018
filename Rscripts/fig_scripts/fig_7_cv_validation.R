@@ -1,7 +1,12 @@
+# init --------------------------------------------------------------------
+
 library(tidyverse)
 library(ggridges)
+library(viridisLite)
 source('Rscripts/lib.R')
 source('Rscripts/validate.lib.3.R')
+
+# load data ---------------------------------------------------------------
 
 #ev <- read_tsv("/gd/bayesian_RT/Alignments/SQC_20180621_2/ev_updated.txt")
 #ev <- read_tsv('/gd/bayesian_RT/Alignments/SQC_20180813_with_PI/ev_updated.txt')
@@ -13,18 +18,18 @@ source('Rscripts/add_percolator.R')
 
 ## run validation script -------
 
+# 1, 2 = carrier channels
+# 3, 4 = empty
+# 11 = empty
 cvs_all <- validate.lib.3(ev, exclude.cols=c(1:4, 11))
 
-#save(cvs_all, file='dat/cvs_all_20180712.rds')
-#save(cvs_all, file='dat/cvs_all_20180813.rds')
-save(cvs_all, file='dat/cvs_all_20180815.rds')
-
+#save(cvs_all, file='/gd/bayesian_RT/dat/cvs_all_20180712.rds')
+save(cvs_all, file='/gd/bayesian_RT/dat/cvs_all_20180813.rds')
 
 # load data ---------------------------------------------------------------
 
-#load('dat/cvs_all_20180712.rds')
-#load('dat/cvs_all_20180813.rds')
-load('dat/cvs_all_20180815.rds')
+#load('/gd/bayesian_RT/dat/cvs_all_20180712.rds')
+load('/gd/bayesian_RT/dat/cvs_all_20180813.rds')
 
 ## --------
 
@@ -65,7 +70,7 @@ cvs_dart <- cvs_all %>% filter(Method == 'Spectra+RT')
 cvs_decoy <- cvs_all %>% filter(Method == 'Null')
 
 k <- 80
-contour_cols <- viridis::viridis(k, alpha=0.75)
+contour_cols <- viridisLite::viridis(k, alpha=0.75)
 
 get_density <- function(x, y, n = 100) {
   dens <- MASS::kde2d(x = x, y = y, n = n)
@@ -75,11 +80,11 @@ get_density <- function(x, y, n = 100) {
   return(dens$z[ii])
 }
 
-pdf(file='manuscript/Figs/cv_scatters_v4.pdf', width=4, height=2)
+pdf(file='manuscript/Figs/cv_scatters_v5.pdf', width=4, height=2)
 
 par(oma=c(0,1.25,0.5,0), 
     pty='s',
-    cex.axis=0.85)
+    cex.axis=1.2)
 
 #layout(rbind(c(1), c(2)))
 # layout(rbind(c(3, 7),
@@ -104,19 +109,19 @@ plot(cvs_spectra$value, cvs_dart$value, pch=16, cex=0.5,
 abline(a=0, b=1, col='red')
 
 cor_text <- formatC(cor(cvs_spectra$value, cvs_dart$value), digits=3, format='f')
-text(0.1, 0.55, bquote(rho*.(' = ')*.(cor_text)), adj=c(0, 0.5), cex=1)
+text(0.07, 0.55, bquote(rho*.(' = ')*.(cor_text)), adj=c(0, 0.5), cex=1.4)
 
 axis(1, at=seq(0, 0.6, by=0.1), tck=-0.02, 
      #labels=NA,
-     mgp=c(0, 0.1, 0))
+     mgp=c(0, 0.4, 0))
 axis(2, at=seq(0, 0.6, by=0.1), tck=-0.02,
      mgp=c(0, 0.4, 0), las=1)
 
-mtext('Spectra CV', side=1, cex=0.85, line=1.4)
-mtext('DART-ID CV', side=2, cex=0.85, line=1.7)
+mtext('Spectra CV', side=1, cex=0.85, line=1.8)
+mtext('DART-ID CV', side=2, cex=0.85, line=2.3)
 
 #par(mar=c(2.5, 2.25, 0.5, 0.25))
-par(mar=c(3.25, 2.25, 0.25, 0.25), cex.axis=0.85)
+par(mar=c(3.25, 2.25, 0.25, 0.25), cex.axis=1.2)
 
 dens <- get_density(cvs_spectra$value, cvs_decoy$value, k)
 
@@ -127,15 +132,15 @@ plot(cvs_spectra$value, cvs_decoy$value, pch=16, cex=0.5,
 abline(a=0, b=1, col='red')
 
 cor_text <- formatC(cor(cvs_spectra$value, cvs_decoy$value), digits=3, format='f')
-text(0.1, 0.55, bquote(rho*.(' = ')*.(cor_text)), adj=c(0, 0.5), cex=1)
+text(0.07, 0.55, bquote(rho*.(' = ')*.(cor_text)), adj=c(0, 0.5), cex=1.4)
 
 axis(1, at=seq(0, 0.6, by=0.1), tck=-0.02,
-     mgp=c(0, 0.1, 0))
+     mgp=c(0, 0.4, 0))
 axis(2, at=seq(0, 0.6, by=0.1), tck=-0.02,
      mgp=c(0, 0.4, 0), las=1)
 
-mtext('Spectra CV', side=1, cex=0.85, line=1.4)
-mtext('Decoy CV', side=2, cex=0.85, line=1.7)
+mtext('Spectra CV', side=1, cex=0.85, line=1.8)
+mtext('Decoy CV', side=2, cex=0.85, line=2.3)
 
 #mtext('CV of Relative Quantitation', side=1, cex=1, line=0, outer=T)
 #mtext('CV of Relative Quantitation', side=2, cex=1, line=1, outer=T)
@@ -148,7 +153,7 @@ hist(cvs_spectra$value[cvs_spectra$value < 0.6], breaks=seq(0, 0.6, by=0.02), fr
 #axis(1, at=seq(0, 0.6, by=0.1), labels=NA, tck=-0.03)
 axis(2, at=seq(0, 10, 3), labels=NA,
      tck=-0.03, mgp=c(0, 0.4, 0), las=1, cex=0.5)
-mtext('Freq', side=2, cex=0.75, line=1.65)
+mtext('   Freq', side=2, cex=0.85, line=1.65)
 
 # 4 = density of DART-ID CV
 par(mar=c(3.25, 0, 0.25, 0.5), pty='m')
@@ -156,7 +161,7 @@ a <- hist(cvs_dart$value[cvs_dart$value < 0.6], breaks=seq(0, 0.6, by=0.02), plo
 barplot(a$density, space=0, horiz=T, axes=F, col='white')
 axis(1, at=seq(0, 10, 3), labels=NA,
      tck=-0.03)
-mtext('Freq', side=1, cex=0.75, line=1.25)
+mtext('Freq', side=1, cex=0.85, line=1.25)
 
 # 5 = density of spectra CV
 par(mar=c(0,2.25,0.5,0.25), pty='m')
@@ -164,7 +169,7 @@ hist(cvs_spectra$value[cvs_spectra$value < 0.6], breaks=seq(0, 0.6, by=0.02), fr
      xlab=NA, ylab=NA, main=NA, xaxt='n', yaxt='n')
 axis(2, at=seq(0, 10, 3), labels=NA,
      tck=-0.03, mgp=c(0, 0.4, 0), las=1, cex=0.5)
-mtext('Freq', side=2, cex=0.75, line=1.65)
+mtext('   Freq', side=2, cex=0.85, line=1.65)
 
 # 6 = density of decoy CV
 par(mar=c(3.25, 0, 0.25, 0.5), pty='m')
@@ -172,7 +177,7 @@ a <- hist(cvs_decoy$value[cvs_decoy$value < 0.6], breaks=seq(0, 0.6, by=0.02), p
 barplot(a$density, space=0, horiz=T, axes=F, col='white')
 axis(1, at=seq(0, 10, 3), labels=NA,
      tck=-0.03)
-mtext('Freq', side=1, cex=0.75, line=1.25)
+mtext('Freq', side=1, cex=0.85, line=1.25)
 
 dev.off()
 
