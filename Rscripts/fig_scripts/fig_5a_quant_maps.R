@@ -175,3 +175,33 @@ mtext('SCoPE-MS Run #', side=1, line=0.75, outer=T, cex=1)
 mtext('Distinct Proteins', side=2, line=1.5, outer=T, cex=1)
 
 dev.off()
+
+
+# for SCP 2019 presentation -----------------------------------------------
+
+a <- conv_to_raster(t(dmat_prots_spec))
+
+plot_img <- function(img) {
+  plot(0, 0, type='n', xlim=c(0, ncol(img)), ylim=c(0, nrow(img)),
+       xaxt='n', yaxt='n', xaxs='i', yaxs='i', xlab=NA, ylab=NA)
+  rasterImage(img[nrow(img):1,], xleft=0, ybottom=0, xright=ncol(img), ytop=nrow(img), interpolate=F)
+}
+
+png(file='manuscript/Figs/scp_2019_missing_dat.png', width=4.5, height=3, units='in', res=400)
+par(oma=c(2,2.5,1.5,0))
+
+par(mar=c(0.5,1,0.25,0.5))
+plot_img(a)
+
+# text(par('usr')[2]*0.05, par('usr')[4]*0.97,
+#      'Spectra', adj=c(0, 1), cex=1, col='black', xpd=T, font=2)
+
+axis(2, tck=-0.02, at=seq(0, ncol(img_prots_spec), by=40), las=1, mgp=c(0, 0.3, 0))
+axis(1, tck=-0.02, at=seq(0, nrow(img_prots_spec), by=400),
+     labels=seq(0, nrow(img_prots_spec), by=400), mgp=c(0, 0.2, 0))
+
+mtext('Proteins Quantified - FDR 1%', side=3, line=0.2, outer=T, cex=1, font=1)
+mtext('Distinct Proteins', side=1, line=0.75, outer=T, cex=1)
+mtext('SCoPE-MS Run #', side=2, line=1, outer=T, cex=1)
+
+dev.off()

@@ -111,3 +111,74 @@ mtext('   PSM 2 [   ]', side=3, line=0.15, cex=0.75, font=2)
 points(2.775, 3.925, pch=22, cex=1.25, xpd=T, bg='black', col='black', lwd=1.5)
 
 dev.off()
+
+
+# for SCP 2019 ------------------------------------------------------------
+
+
+# prediction - wide peaks -------------------------------------------------
+
+# png(file='manuscript/Figs/SCP_2019_conf_update_prediction.png', width=3.5, height=2.5, units='in', res=400)
+png(file='manuscript/Figs/SCP_2019_conf_update_alignment.png', width=3.5, height=2.5, units='in', res=400)
+
+par(oma=c(2,0,0,0.75),
+    mar=c(0.5,3,0.5,0.75),
+    xaxs='i', yaxs='i', pty='m', cex.axis=1)
+
+plot(0, 0, type='n',
+     xlim=c(20, 25), 
+#     ylim=c(-0.05, 0.4), # prediction
+     ylim=c(-0.05, 1), # alignment
+     xaxt='n', yaxt='n',
+     xlab=NA, ylab=NA)
+
+mu <- 25.25
+exp <- 0.95
+
+denx <- seq(10, 100, length.out=10000)
+
+#dist_sd <- 2 # prediction
+dist_sd <- 0.7 # alignment
+
+deny <- dlaplace(denx, m=mu*exp, s=dist_sd)
+polygon(c(denx, 25), c(deny, 0), 
+        col=rgb(0, 0, 1, 0.3))
+lines(denx[1:10000], deny[1:10000], col='blue', lwd=2)
+
+#segments(x0=mu*exp, x1=mu*exp,
+#         y0=0, y1=dnorm(mu*exp, mean=mu*exp, sd=dist_sd),
+#         col='blue', lwd=2, lty=2)
+abline(h=0, col='black', lwd=2)
+
+# null distribution
+den_null <- (dnorm(denx, mean=22, sd=5) * 1)
+polygon(c(0, denx,25), c(0, den_null,0), 
+        col=rgb(1, 0, 0, 0.3), border=NA)
+lines(denx, den_null, col='red', lwd=2)
+
+# points
+# x1 <- mu*exp-2
+# x2 <- mu*exp+0.3
+# points(c(x1, x2), rep(0,2), pch=c(21, 22), bg='black', col='black', lwd=2, cex=2)
+
+#text(x=mu*exp,y=1.65, labels="Peptide X\nExperiment A", font=1, cex=1.2)
+
+axis(side=1, tck=-0.02, mgp=c(0, 0.3, 0))
+axis(side=2, tck=-0.02, las=1, mgp=c(0, 0.4, 0))
+
+mtext('Retention time (min)', side=1, line=1.5, cex=1)
+mtext('Probability density', side=2, line=1.85, cex=1, las=3)
+
+par(lheight=0.85)
+print(par('usr'))
+text(par('usr')[1] + (par('usr')[2] - par('usr')[1])*0.05, 
+     par('usr')[4] - (par('usr')[4] - par('usr')[3])*0.05, 
+     'Conditional RT Likelihood', adj=c(0, 1), cex=1)
+# text(21.25, 
+#      1.15, 
+#      expression('ID Correct\n', (delta==1)), adj=c(0, 0.5))
+# text(21.25, 0.65, expression('ID Incorrect\n', (delta==0)), adj=c(0, 0.5))
+# points(rep(20.75, 2), c(1.25, 0.75), col=c('blue', 'red'), 
+#        pch=22, bg=c(rgb(0,0,1,0.3), rgb(1,0,0,0.3)), cex=3, lwd=2)
+
+dev.off()
